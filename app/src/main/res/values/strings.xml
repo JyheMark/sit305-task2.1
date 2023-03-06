@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">BasicUnitConverter</string>
+    <string name="main_view_caption">Very nice conversion app</string>
+    <string name="spinner_hint">Kilogram</string>
+    <string name="convert_button_text">Let\'s go!</string>
+    <string-array name="unit_types">
+        <item>Inch</item>
+        <item>Foot</item>
+        <item>Yard</item>
+        <item>Mile</item>
+        <item>Centimetre</item>
+        <item>Meter</item>
+        <item>Kilometer</item>
+        <item>Pound</item>
+        <item>Ounce</item>
+        <item>Ton</item>
+        <item>Gram</item>
+        <item>Kilogram</item>
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+        <item>Kelvin</item>
+    </string-array>
 </resources>
