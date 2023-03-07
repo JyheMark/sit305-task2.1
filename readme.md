@@ -8,4 +8,4 @@ Conversion between the following units:
 
 - Length: inch, foot, yard, mile, centimetre, metre, kilometre
 - Weight: pound, ounce, ton, gram, kilogram
-- Temperature: Celsius, Fahrenheight, Kelvin
+- Temperature: Celsius, Fahrenheit, Kelvin

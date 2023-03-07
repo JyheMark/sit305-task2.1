@@ -1,10 +1,12 @@
 package com.example.basicunitconverter;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -36,6 +38,70 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void convertButtonOnClick(View view){
-        Toast.makeText(this, "Button clicked!", Toast.LENGTH_SHORT).show();
+        validateInput();
+    }
+
+    private void validateInput() {
+        validateUserAmount();
+        validateUnitTypes();
+    }
+
+    private void validateUnitTypes() {
+        String sourceSpinnerSelection = extractTextFromSpinner(R.id.sourceUnitSpinner).toUpperCase();
+        String targetSpinnerSelection = extractTextFromSpinner(R.id.targetUnitSpinner).toUpperCase();
+
+        if (sourceSpinnerSelection.equals(targetSpinnerSelection)){
+            showToastMessage("Conversion units can not be the same");
+            return;
+        }
+
+        UnitTypes.Unit sourceUnit = UnitTypes.Unit.valueOf(sourceSpinnerSelection);
+        UnitTypes.Unit targetUnit = UnitTypes.Unit.valueOf(targetSpinnerSelection);
+
+        if (!areUnitTypeSelectionsSameCategory(sourceUnit, targetUnit))
+        {
+            showToastMessage("Please ensure units are of the same category");
+        }
+    }
+
+    private boolean areUnitTypeSelectionsSameCategory(UnitTypes.Unit sourceSpinnerSelection, UnitTypes.Unit targetSpinnerSelection) {
+        return UnitTypes.getUnitType(sourceSpinnerSelection) == UnitTypes.getUnitType(targetSpinnerSelection);
+    }
+
+    private String extractTextFromSpinner(int spinnerId){
+        Spinner spinner = findViewById(spinnerId);
+
+        if (spinner == null)
+            throw new NullPointerException("Could not resolve spinner with id "+spinnerId);
+
+        return spinner.getSelectedItem().toString();
+    }
+
+    private void validateUserAmount() {
+        String inputText = extractTextFromTextEdit(R.id.sourceUnitAmount);
+
+        if (inputText.isEmpty()){
+            showToastMessage("Please enter a unit amount to convert");
+            return;
+        }
+
+        double unitAmount = Double.parseDouble(inputText);
+
+        if (unitAmount <= 0)
+            showToastMessage("Please enter a unit amount above 0");
+    }
+
+    @NonNull
+    private String extractTextFromTextEdit(int textEditId) {
+        EditText sourceUnitAmountTextInput = findViewById(textEditId);
+
+        if (sourceUnitAmountTextInput == null)
+            throw new NullPointerException("Could not resolve reference to TextEdit with id "+textEditId);
+
+        return sourceUnitAmountTextInput.getText().toString();
+    }
+
+    private void showToastMessage(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }
