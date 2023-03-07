@@ -44,6 +44,18 @@ public class MainActivity extends AppCompatActivity {
     private void validateInput() {
         validateUserAmount();
         validateUnitTypes();
+
+        String sourceSpinnerSelection = extractTextFromSpinner(R.id.sourceUnitSpinner);
+        UnitTypes.UnitType unitType = UnitTypes.getUnitType(UnitTypes.Unit.valueOf(sourceSpinnerSelection.toUpperCase()));
+
+        UnitTypes.Unit sourceUnit = UnitTypes.Unit.valueOf(sourceSpinnerSelection.toUpperCase());
+
+        String targetSpinnerSelect = extractTextFromSpinner(R.id.targetUnitSpinner);
+        UnitTypes.Unit targetUnit = UnitTypes.Unit.valueOf(targetSpinnerSelect.toUpperCase());
+
+        double unitConversionAmount = Double.parseDouble(extractTextFromTextEdit(R.id.sourceUnitAmount));
+
+        double result = ConverterFactory.getConverter(unitType).convert(sourceUnit, targetUnit, unitConversionAmount);
     }
 
     private void validateUnitTypes() {
