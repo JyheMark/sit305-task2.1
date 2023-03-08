@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,23 +40,31 @@ public class MainActivity extends AppCompatActivity {
 
     public void convertButtonOnClick(View view){
         validateInput();
+
+        double unitConversionAmount = Double.parseDouble(extractTextFromTextEdit(R.id.sourceUnitAmount));
+        UnitTypes.UnitType unitType = UnitTypes.getUnitType(getSpinnerUnitType(R.id.sourceUnitSpinner));
+
+        double result = ConverterFactory
+                .getConverter(unitType)
+                .convert(getSpinnerUnitType(R.id.sourceUnitSpinner), getSpinnerUnitType(R.id.targetUnitSpinner), unitConversionAmount);
+
+        DisplayResult(result, getSpinnerUnitType(R.id.targetUnitSpinner));
+    }
+
+    private void DisplayResult(double result, @NonNull UnitTypes.Unit unit) {
+        TextView conversionResultLabel = findViewById(R.id.lbl_conversionResult);
+        conversionResultLabel.setText(result + " " + unit);
+        conversionResultLabel.setVisibility(View.VISIBLE);
+    }
+
+    private UnitTypes.Unit getSpinnerUnitType(int spinnerId){
+        String sourceSpinnerSelection = extractTextFromSpinner(spinnerId);
+        return UnitTypes.Unit.valueOf(sourceSpinnerSelection.toUpperCase());
     }
 
     private void validateInput() {
         validateUserAmount();
         validateUnitTypes();
-
-        String sourceSpinnerSelection = extractTextFromSpinner(R.id.sourceUnitSpinner);
-        UnitTypes.UnitType unitType = UnitTypes.getUnitType(UnitTypes.Unit.valueOf(sourceSpinnerSelection.toUpperCase()));
-
-        UnitTypes.Unit sourceUnit = UnitTypes.Unit.valueOf(sourceSpinnerSelection.toUpperCase());
-
-        String targetSpinnerSelect = extractTextFromSpinner(R.id.targetUnitSpinner);
-        UnitTypes.Unit targetUnit = UnitTypes.Unit.valueOf(targetSpinnerSelect.toUpperCase());
-
-        double unitConversionAmount = Double.parseDouble(extractTextFromTextEdit(R.id.sourceUnitAmount));
-
-        double result = ConverterFactory.getConverter(unitType).convert(sourceUnit, targetUnit, unitConversionAmount);
     }
 
     private void validateUnitTypes() {
